@@ -14,7 +14,26 @@ export const JobRepository = () => {
     return jobs;
   };
 
+  const getDistinctLocationsByApproved = async (
+    approved: boolean,
+  ): Promise<string[]> => {
+    const jobsWithLocations = await prisma.job.findMany({
+      where: {
+        location: {
+          not: null,
+        },
+        approved: approved,
+      },
+      select: {
+        location: true,
+      },
+      distinct: ["location"],
+    });
+    return jobsWithLocations.map((_) => String(_.location));
+  };
+
   return {
     getAllByApproved,
+    getDistinctLocationsByApproved,
   };
 };
