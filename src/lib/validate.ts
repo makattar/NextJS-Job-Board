@@ -6,6 +6,7 @@ export const jobFilterSchema = z.object({
   location: z.string().optional(),
   remote: z.coerce.boolean().optional(),
 });
+export type jobFilterSchemaType = z.infer<typeof jobFilterSchema>;
 
 interface ValidateInterface<T> {
   data: T;

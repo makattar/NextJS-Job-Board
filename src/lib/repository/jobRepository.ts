@@ -1,4 +1,4 @@
-import { Job } from "@prisma/client";
+import { Job, Prisma } from "@prisma/client";
 import prisma from "../prisma";
 
 export const JobRepository = () => {
@@ -32,8 +32,19 @@ export const JobRepository = () => {
     return jobsWithLocations.map((_) => String(_.location));
   };
 
+  const getByPredicate = async (
+    predicate: Prisma.JobWhereInput,
+  ): Promise<Job[]> => {
+    const jobs = await prisma.job.findMany({
+      where: {
+        ...predicate,
+      },
+    });
+    return jobs;
+  };
   return {
     getAllByApproved,
     getDistinctLocationsByApproved,
+    getByPredicate,
   };
 };
