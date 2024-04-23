@@ -4,11 +4,25 @@ import { Label } from "@/components/ui/label";
 import Select from "@/components/ui/select";
 import { jobTypes } from "@/lib/constant/job-types";
 import { JobRepository } from "@/lib/repository/jobRepository";
+import { jobFilterSchema, validateSchema } from "@/lib/validate";
+import { redirect } from "next/navigation";
 
 interface JobFilterSidebarInterface {}
 
 async function filterJobs(formData: FormData) {
   "use server";
+  const values = Object.fromEntries(formData.entries());
+  const { isOk, data: parsedValues } = validateSchema(values, jobFilterSchema);
+  if (isOk) {
+    const { q, type, location, remote } = parsedValues;
+    const searchParams = new URLSearchParams({
+      ...(q && { q: q.trim() }),
+      ...(type && { type }),
+      ...(location && { location }),
+      ...(remote && { remote: "true" }),
+    });
+    redirect(`/?${searchParams.toString()}`);
+  }
 }
 
 export default async function JobFilterSidebar({}: JobFilterSidebarInterface) {
