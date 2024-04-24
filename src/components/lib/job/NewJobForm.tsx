@@ -22,7 +22,7 @@ import { Label } from "@/components/ui/label";
 import RichTextEditor from "./RichTextEditor";
 import { draftToMarkdown } from "markdown-draft-js";
 import LoadingButton from "./LoadingButton";
-import { actionCreateJobPosting } from "@/lib/constant/jobs/actions";
+import { actionCreateJobPosting } from "@/lib/actions/jobs/actions";
 
 export default function NewJobForm() {
   const form = useForm<createJobSchemaType>({
